@@ -1,6 +1,11 @@
 python-chord
 ============
+This repository is fork form [here](https://github.com/gaston770/python-chord).It is optimized for python3.
 
+### Enviroment
+- Python 3.6.0 :: Anaconda 4.3.1
+
+# Original Readme
 Python implementation of [this paper](http://pdos.csail.mit.edu/papers/chord:sigcomm01/chord_sigcomm.pdf).
 
 Its base class is `Local`, located in chord.py. It provides the overlay network and
