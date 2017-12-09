@@ -76,7 +76,7 @@ class Local(object):
         return inrange(id, self.predecessor_.id(1), self.id(1))
 
     def shutdown(self):
-        self.shutdown_ = Trues
+        self.shutdown_ = True
         self.socket_.shutdown(socket.SHUT_RDWR)
         self.socket_.close()
 

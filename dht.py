@@ -75,7 +75,7 @@ class DHT(object):
 	def distribute_data(self):
 		to_remove = []
 		# to prevent from RTE in case data gets updated by other thread
-		keys = self.data_.keys()
+		keys = list(self.data_.keys())
 		for key in keys:
 			if self.local_.predecessor() and \
 			   not inrange(hash(key), self.local_.predecessor().id(1), self.local_.id(1)):
@@ -84,9 +84,9 @@ class DHT(object):
 					node.command("set %s" % json.dumps({'key':key, 'value':self.data_[key]}))
 					# print "moved %s into %s" % (key, node.id())
 					to_remove.append(key)
-					print "migrated"
+					print("migrated")
 				except socket.error:
-					print "error migrating"
+					print("error migrating")
 					# we'll migrate it next time
 					pass
 		# remove all the keys we do not own any more
@@ -96,7 +96,7 @@ class DHT(object):
 		return True
 
 def create_dht(lport):
-	laddress = map(lambda port: Address('127.0.0.1', port), lport)
+	laddress = [Address('127.0.0.1', port) for port in lport]
 	r = [DHT(laddress[0])]
 	for address in laddress[1:]:
 		r.append(DHT(address, laddress[0]))
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 		dht = DHT(Address("127.0.0.1", sys.argv[1]))
 	else:
 		dht = DHT(Address("127.0.0.1", sys.argv[1]), Address("127.0.0.1", sys.argv[2]))
-	raw_input("Press any key to shutdown")
-	print "shuting down.."
+	input("Press any key to shutdown")
+	print("shuting down..")
 	dht.shutdown()
 
