@@ -194,6 +194,7 @@ class Local(object):
         print("No successor available, aborting")
         self.shutdown_ = True
         sys.exit(-1)
+        print("hoge")
 
     def predecessor(self):
         return self.predecessor_
@@ -282,6 +283,7 @@ class Local(object):
             conn.close()
 
             if command == 'shutdown':
+                print("shutdown chord node")
                 self.socket_.close()
                 self.shutdown_ = True
                 self.log("shutdown started")
