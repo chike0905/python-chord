@@ -194,7 +194,6 @@ class Local(object):
         print("No successor available, aborting")
         self.shutdown_ = True
         sys.exit(-1)
-        print("hoge")
 
     def predecessor(self):
         return self.predecessor_

@@ -2,6 +2,7 @@ from chord import Local, Daemon, repeat_and_sleep, inrange
 from remote import Remote
 from address import Address
 import json
+import hashlib
 
 # data structure that represents a distributed hash table
 class DHT(object):
@@ -54,7 +55,7 @@ class DHT(object):
       return self.data_[key]
     except Exception:
       # not in our range
-      suc = self.local_.find_successor(hash(key))
+      suc = self.local_.find_successor(int(hashlib.sha256(str(key).encode("utf-8")).hexdigest(),16))
       if self.local_.id() == suc.id():
         # it's us but we don't have it
         return None
@@ -79,9 +80,10 @@ class DHT(object):
     keys = list(self.data_.keys())
     for key in keys:
       if self.local_.predecessor() and \
-         not inrange(hash(key), self.local_.predecessor().id(1), self.local_.id(1)):
+         not inrange(int(hashlib.sha256(str(key).encode("utf-8")).hexdigest(),16), self.local_.predecessor().id(1), self.local_.id(1)):
+        print(int(hashlib.sha256(str(key).encode("utf-8")).hexdigest(),16))
         try:
-          node = self.local_.find_successor(hash(key))
+          node = self.local_.find_successor(int(hashlib.sha256(str(key).encode("utf-8")).hexdigest(),16))
           node.command("set %s" % json.dumps({'key':key, 'value':self.data_[key]}))
           # print "moved %s into %s" % (key, node.id())
           to_remove.append(key)
